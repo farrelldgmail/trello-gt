@@ -35,6 +35,7 @@ const crash = () => {
           />
           <q-list bordered style="max-width: 300px" class="text-center">
             <q-item :to="{ name: 'user-list' }">View users</q-item>
+            <q-item :to="{ name: 'boards' }">View boards</q-item>
             <q-item
               :to="{ name: `feature-${feature}` }"
               :key="`feature-${feature}`"
