@@ -1,11 +1,19 @@
 <script setup lang="ts">
-  import castleBackground from '@/assets/images/castle.jpg';
-  import { ref } from 'vue';
+  // import type { Boards } from 'project-template-backend';
+  import { useFeathersService } from '@/feathers-client';
+  import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
+
+  const Board = useFeathersService('boards');
+  const params = computed(() => ({ query: {} }));
+  const boards$ = Board.useFind(params, { paginateOn: 'server' });
+  const boards = computed(() => boards$.data);
 
   const router = useRouter();
 
   const showAddBoard = ref<boolean>(false);
+
+  // const newBoard = ref<Boards>();
 
   const showBoard = (id) => {
     router.push({ "name": "board", "params": { id } });
@@ -23,16 +31,16 @@
 <template>
   <q-page padding class="cursor-pointer" @click="showAddBoard = false">
     <div class="row q-gutter-md">
-      <div v-for="index in 6" :key="index" class="col-3">
-        <q-card @click="showBoard(index)">
-          <q-img :src="castleBackground">
-            <div class="text-white text-h4 width-100">Title</div>
+      <div v-for="board in boards" :key="board.id" class="col-3">
+        <q-card @click="showBoard(id)">
+          <q-img :src="board.imageUrl">
+            <div class="text-white text-h4 width-100">{{ board.title }}</div>
           </q-img>
           <q-card-actions>
             <div class="col-10 self-start vertical-middle">
               <div class="q-pt-sm">
               <q-avatar icon="person" color="primary" text-color="white" size="sm" class="q-mr-sm" />
-              User - A while ago
+                {{ board.updatedBy.fullName }} - A while ago
               </div>
             </div>
             <div class="col-2 self-end">

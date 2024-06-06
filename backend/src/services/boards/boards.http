@@ -1,0 +1,34 @@
+POST http://localhost:3030/boards
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE3MTc2ODA4MTMsImV4cCI6MTcxNzc2NzIxMywiYXVkIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSIsInN1YiI6IjY2NjBiMTAxMmVlM2E4YWQ3MDAzYWNhOCIsImp0aSI6IjViMjIyYjM0LTY0YjEtNDBiNS05ZWE1LWMxY2Y4ZDNiZTgxYSJ9.O5mmIy2OqJ7n2HyLCzrwCfhmSJHU1NTPHgWlOMS9hgk
+
+{
+  "title": "Joe binn's very 7th project",
+  "imageUrl": "https://assets3.thrillist.com/v1/image/3164560/2880x1620/crop;webp=auto;jpeg_quality=60;progressive.jpg"
+}
+
+###
+
+GET http://localhost:3030/boards/6662119c7a2407a66d3b219b
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE3MTc2ODA4MTMsImV4cCI6MTcxNzc2NzIxMywiYXVkIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSIsInN1YiI6IjY2NjBiMTAxMmVlM2E4YWQ3MDAzYWNhOCIsImp0aSI6IjViMjIyYjM0LTY0YjEtNDBiNS05ZWE1LWMxY2Y4ZDNiZTgxYSJ9.O5mmIy2OqJ7n2HyLCzrwCfhmSJHU1NTPHgWlOMS9hgk
+
+###
+
+PATCH http://localhost:3030/boards/6661f614d01863e044ea3839
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE3MTc2ODA4MTMsImV4cCI6MTcxNzc2NzIxMywiYXVkIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSIsInN1YiI6IjY2NjBiMTAxMmVlM2E4YWQ3MDAzYWNhOCIsImp0aSI6IjViMjIyYjM0LTY0YjEtNDBiNS05ZWE1LWMxY2Y4ZDNiZTgxYSJ9.O5mmIy2OqJ7n2HyLCzrwCfhmSJHU1NTPHgWlOMS9hgk
+
+{
+  "title": "Joe binn's zzz"
+}
+
+###
+
+POST http://localhost:3030/authentication
+Content-Type: application/json
+
+{
+"email": "a",
+"password": "a"
+}
