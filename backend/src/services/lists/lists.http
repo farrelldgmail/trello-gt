@@ -1,0 +1,18 @@
+POST http://localhost:3030/lists
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE3MTc3Njc0MjAsImV4cCI6MTcxNzg1MzgyMCwiYXVkIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSIsInN1YiI6IjY2NjBiMTAxMmVlM2E4YWQ3MDAzYWNhOCIsImp0aSI6ImJjMWUxOTcyLWQ3Y2ItNDliOS1iMmQwLTdkZWEzMWUxZjgxZSJ9.nmZIuQjUrcWSp2nlkybnPs-4ygqNa0N65Sci8IKHowY
+
+{
+  "text": "List text 4",
+  "boardId": "6662119c7a2407a66d3b219b"
+}
+
+###
+
+PATCH http://localhost:3030/lists/66634c7639c5a3fc45006086
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE3MTc3Njc0MjAsImV4cCI6MTcxNzg1MzgyMCwiYXVkIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSIsInN1YiI6IjY2NjBiMTAxMmVlM2E4YWQ3MDAzYWNhOCIsImp0aSI6ImJjMWUxOTcyLWQ3Y2ItNDliOS1iMmQwLTdkZWEzMWUxZjgxZSJ9.nmZIuQjUrcWSp2nlkybnPs-4ygqNa0N65Sci8IKHowY
+
+{
+  "bgColor": "#f4963e"
+}

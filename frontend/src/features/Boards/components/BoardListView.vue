@@ -3,9 +3,10 @@
   import { useFeathersService } from '@/feathers-client';
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
+  import { generateTimeAgo } from '../utils';
 
   const Board = useFeathersService('boards');
-  const params = computed(() => ({ query: {} }));
+  const params = computed(() => ({ query: { $limit: 100 } }));
   const boards$ = Board.useFind(params, { paginateOn: 'server' });
   const boards = computed(() => boards$.data);
 
@@ -15,8 +16,8 @@
 
   // const newBoard = ref<Boards>();
 
-  const showBoard = (id) => {
-    router.push({ "name": "board", "params": { id } });
+  const showBoard = (boardId) => {
+    router.push({ "name": "board", "params": { boardId } });
   }
 
   const createBoard = () => {
@@ -31,8 +32,8 @@
 <template>
   <q-page padding class="cursor-pointer" @click="showAddBoard = false">
     <div class="row q-gutter-md">
-      <div v-for="board in boards" :key="board.id" class="col-3">
-        <q-card @click="showBoard(id)">
+      <div v-for="board in boards" :key="board._id" class="col-3">
+        <q-card @click="showBoard(board._id)">
           <q-img :src="board.imageUrl">
             <div class="text-white text-h4 width-100">{{ board.title }}</div>
           </q-img>
@@ -40,7 +41,7 @@
             <div class="col-10 self-start vertical-middle">
               <div class="q-pt-sm">
               <q-avatar icon="person" color="primary" text-color="white" size="sm" class="q-mr-sm" />
-                {{ board.updatedBy.fullName }} - A while ago
+                {{ board.updatedBy.fullName }} - {{ generateTimeAgo(board.updatedAt) }}
               </div>
             </div>
             <div class="col-2 self-end">

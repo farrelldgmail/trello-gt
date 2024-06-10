@@ -10,7 +10,7 @@ export default [
       },
       {
         name: 'board',
-        path: '/:id',
+        path: '/:boardId',
         component: () => import('./components/BoardView.vue'),
       },
     ],

@@ -21,6 +21,11 @@ import { boardsPath, boardsMethods } from './boards.shared'
 export * from './boards.class'
 export * from './boards.schema'
 
+const logEvent = (event: string) => (context) => {
+  // if context.serviceName === 'board'
+  context.app.service('eventLog').create({ text: `${event} ${context.serviceName}`});
+} ;
+
 // A configure function that registers the service and its hooks via `app.configure`
 export const boards = (app: Application) => {
   // Register our service on the Feathers application
@@ -48,7 +53,9 @@ export const boards = (app: Application) => {
       remove: []
     },
     after: {
-      all: []
+      all: [],
+      create: [logEvent('Created')],
+      patch: [logEvent('Patched')]
     },
     error: {
       all: []

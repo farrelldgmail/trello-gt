@@ -2,8 +2,10 @@ import { type FeathersService, feathers } from '@feathersjs/feathers';
 import authenticationClient from '@feathersjs/authentication-client';
 import socketio from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
-import { createPiniaClient } from 'feathers-pinia';
+import { createPiniaClient, ServiceInstance, useInstanceDefaults } from 'feathers-pinia';
 import { pinia } from './modules/pinia';
+import { Boards } from 'project-template-backend';
+import { computed } from 'vue';
 
 const host =
   (import.meta.env.VITE_MY_API_URL as string) || 'http://localhost:3030';
@@ -29,7 +31,22 @@ export const api = createPiniaClient(feathersClient, {
   customizeStore() {
     return {};
   },
-  services: {},
+  services: {
+    boards: {
+      setupInstance(data: ServiceInstance<Boards>, { app }) {
+        app.pushToStore(data.lists, 'lists');
+        data.lists = computed(() => app.service("lists").findInStore({ query: { boardId: data._id } }).data);
+        return useInstanceDefaults({ title: '', imageUrl: '' }, data);
+      },
+    },
+    lists: {
+      setupInstance(data: ServiceInstance<Lists>, { app }) {
+        app.pushToStore(data.cards, 'cards');
+        data.cards = computed(() => app.service("cards").findInStore({ query: { listId: data._id } }).data);
+        return useInstanceDefaults({ text: '' }, data);
+      },
+    },
+  },
 });
 
 export function useFeathers() {

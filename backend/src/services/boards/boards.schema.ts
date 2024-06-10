@@ -19,6 +19,7 @@ export const boardsSchema = Type.Object(
     updatedBy: Type.Ref(userSchema),
     createdAt: Type.String({ format: 'date-time' }),
     updatedAt: Type.String({ format: 'date-time' }),
+    lists: Type.Array(Type.Any())
   },
   { $id: 'Boards', additionalProperties: false }
 )
@@ -32,6 +33,11 @@ export const boardsResolver = resolve<Boards, HookContext<BoardsService>>({
   updatedBy: virtual(async (board, context) => {
     // Associate the user that sent the message
     return context.app.service('users').get(board.updatedBy.toString());
+  }),
+  lists: virtual(async (board, context) => {
+    // TODO: Discrémination pour le find vs get (le find ne ramasse pas récursif)
+    // Associate the lists belonging to the board
+    return (await context.app.service('lists').find({ query: { boardId: board._id.toString() } })).data;
   })
 })
 
@@ -78,7 +84,21 @@ export const boardsPatchResolver = resolve<Boards, HookContext<BoardsService>>({
 })
 
 // Schema for allowed query properties
-export const boardsQueryProperties = Type.Pick(boardsSchema, ['_id', 'title'])
+export const boardsQueryProperties = Type.Pick(boardsSchema, ['_id', 'title', 'lists'])
+// export const boardsQuerySchema = Type.Intersect(
+//   [
+//     // querySyntax(boardsQueryProperties),
+//     // Type.Object({ eager: Type.Boolean() })
+//     querySyntax(boardsQueryProperties, {
+//       lists: {
+//         $eager: Type.Boolean()
+//       }
+//     }),
+//     Type.Object({})
+//   ],
+//   { additionalProperties: false }
+// )
+
 export const boardsQuerySchema = Type.Intersect(
   [
     querySyntax(boardsQueryProperties),
@@ -87,6 +107,7 @@ export const boardsQuerySchema = Type.Intersect(
   ],
   { additionalProperties: false }
 )
+
 export type BoardsQuery = Static<typeof boardsQuerySchema>
 export const boardsQueryValidator = getValidator(boardsQuerySchema, queryValidator)
 export const boardsQueryResolver = resolve<BoardsQuery, HookContext<BoardsService>>({

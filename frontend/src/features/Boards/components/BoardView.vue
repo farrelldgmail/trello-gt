@@ -1,7 +1,16 @@
 <script setup lang="ts">
-  import castleBackground from '@/assets/images/castle.jpg';
-  import luffyPicture from '@/assets/images/luffy.png';
-  import { ref } from 'vue';
+  import { ref,computed } from 'vue';
+  import { useFeathersService } from '@/feathers-client';
+  import { useRoute } from 'vue-router';
+  import { generateTimeAgo } from '../utils';
+
+  const route = useRoute();
+
+  const Board = useFeathersService('boards');
+  const boards$ = Board.useGet(route.params.boardId);
+  const board = computed(() => boards$.data);
+
+  console.log('boards=', board);
 
   const showAddList = ref<boolean>(false);
   const showAddCard = ref<boolean>(false);
@@ -16,18 +25,18 @@
 </script>
 
 <template>
-  <q-page @click="showAddList = false; showAddCard = false;" :style="`background: url(${castleBackground}) center / cover;`">
+  <q-page @click="showAddList = false; showAddCard = false;" :style="`background: url(${board?.imageUrl}) center / cover;`">
     <div class="row bg-grey-7 text-h5 text-white q-pa-sm">
       Mon projet
     </div>
     <div class="row q-gutter-md q-pa-md">
-      <div v-for="index in 3" :key="index" class="col-3">
-        <q-card class="bg-amber-2">
+      <div v-for="list in board?.lists" :key="list._id" class="col-3">
+        <q-card :style="`background-color:${list.bgColor}`">
           <q-card-section class="q-py-xs qpx-s">
             <div class="row">
               <div class="col-10 self-start vertical-middle">
                 <div class="q-pt-sm">
-                  List
+                  {{ list.text }}
                 </div>
               </div>
               <div class="col-2 self-end">
@@ -39,11 +48,11 @@
                     <q-card>
                       <q-card-section class="row q-gutter-sm">
                         <q-avatar color="primary" size="lg">
-                          <img :src="luffyPicture">
+                          <img :src="list.updatedBy.avatarUrl">
                         </q-avatar>
                         <div>
-                          Owner
-                          <div class="text-grey-9">Some time ago</div>
+                          {{ list.updatedBy.fullName }}
+                          <div class="text-grey-9">{{ generateTimeAgo(list.updatedAt) }}</div>
                         </div>
                       </q-card-section>
                       <q-card-actions class="column items-end q-gutter-sm">
@@ -58,9 +67,9 @@
               </div>
             </div>
             <div class="column q-gutter-xs">
-              <div v-for="index in 3" :key="index" class="col-12">
+              <div v-for="card in list?.cards" :key="card._id" class="col-12">
                 <q-card class="q-pa-xs cursor-pointer" draggable>
-                  {{ `Test ${index}` }}
+                  {{ card.text }}
                 </q-card>
               </div>
             </div>
